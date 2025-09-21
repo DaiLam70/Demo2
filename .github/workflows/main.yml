@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Phase 2 Postman Tests
         run: |
-          newman run Phase2_Intermediate.postman_collection.json \
+          newman run Phase 2.postman_collection.json \
           --env-var "BaseUrl=https://dummyjson.com" \
           --reporters cli,json \
           --reporter-json-export newman-report-phase2.json
