@@ -1,0 +1,41 @@
+name: Run Postman Tests - Phase 2 (DummyJSON)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  phase2-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3. Install Newman
+      - name: Install Newman
+        run: npm install -g newman
+
+      # 4. Run Postman Collection (Phase 2)
+      - name: Run Phase 2 Postman Tests
+        run: |
+          newman run Phase2_Intermediate.postman_collection.json \
+          --env-var "BaseUrl=https://dummyjson.com" \
+          --reporters cli,json \
+          --reporter-json-export newman-report-phase2.json
+
+      # 5. Upload test report (artifact)
+      - name: Upload Newman Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: newman-phase2-report
+          path: newman-report-phase2.json
